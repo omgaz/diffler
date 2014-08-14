@@ -9,7 +9,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Running Karma Tests\" && ./node_modules/.bin/karma start karma.conf.js --single-run"
+    "test": "echo \"Running Karma Tests\" && ./node_modules/karma/bin/karma start karma.conf.js --single-run"
   },
   "repository": {
     "type": "git",
