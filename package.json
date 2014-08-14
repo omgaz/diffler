@@ -1,0 +1,27 @@
+{
+  "name": "js-diff",
+  "version": "0.0.1",
+  "description": "A recursive JavaScript object comparison script",
+  "main": "diff.js",
+  "dependencies": {
+    "karma": "~0.12.21",
+    "karma-jasmine": "~0.1.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Running Karma Tests\" && karma start karma.conf.js --single-run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omgaz/js-diff.git"
+  },
+  "keywords": [
+    "diff"
+  ],
+  "author": "Gary Chisholm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omgaz/js-diff/issues"
+  },
+  "homepage": "https://github.com/omgaz/js-diff"
+}
