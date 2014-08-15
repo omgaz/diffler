@@ -2,7 +2,7 @@ js-diff
 =======
 A basic JavaScript object comparison script that will iterate, recursivly, through two JSON objects to compare differences.
 
-This was built for a project in which we had a serialised form as JSON that we cached on page load and compared against the final saved form. We used this information to construct email summaries of changed behaviour as well as provide a detailed audit trail of actions.
+This was built for a project in which I had a JSON object of user data that I cached on page load and compared against an edited version on save. I used this information to construct email summaries of changed behaviour as well as provide a detailed audit trail of actions.
 
 Code
 ----
