@@ -6,7 +6,7 @@ This was built for a project in which I had a JSON object of user data that I ca
 
 Code
 ----
-Code can be found under `src` at [src/diff.js](src/diff.js). That's all you need to worry about. All the other files are for tests.
+Code can be found under `src` at [src/diff.js](src/diff.js). That's all you need to worry about and the code has no dependencies on any library. NodeJS and all the other files are purely for running tests.
 
 Params
 ------
