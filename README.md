@@ -19,15 +19,19 @@ Returns an `object` if differences are found. The object will maintain path stru
 
 Example
 -------
-	var x = { name: "omgaz", location: "London" };
-	var y = { name: "omgaz", location: "Shoreditch, London" };
 
-	getDiff(x, y);
+    var x = { name: "omgaz", location: "London" };
+    var y = { name: "omgaz", location: "Melbourne" };
 
-	// Returns
-	location: Object
-		from: "London"
-		to: "Shoreditch, London"
+    getDiff(x, y);
+
+    // Returns object
+    {
+      location: {
+        from: "London",
+        to:   "Melbourne"
+      }
+    }
 
 Tests
 -----
@@ -36,5 +40,5 @@ Tests
 
 If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Karma and PhantomJS.
 
-	npm install
-	npm test 
+    npm install
+    npm test 
