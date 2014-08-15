@@ -4,7 +4,7 @@ A basic JavaScript object comparison script that will iterate, recursivly, throu
 
 Code
 ----
-Code can be found under `src`. That's all you need to worry about. All the other files are for tests.
+Code can be found under `src` at [src/diff.js](src/diff.js). That's all you need to worry about. All the other files are for tests.
 
 Params
 ------
