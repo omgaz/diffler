@@ -1,14 +1,15 @@
 {
   "name": "js-diff",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A recursive JavaScript object comparison script",
   "main": "diff.js",
-  "dependencies": {
-    "karma": "~0.12.21",
-    "karma-jasmine": "~0.1.5",
-    "karma-phantomjs-launcher": "^0.1.4"
+  "dependencies": {},
+  "devDependencies": {
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.2"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Running Karma Tests\" && ./node_modules/karma/bin/karma start karma.conf.js --single-run --browsers PhantomJS"
   },
