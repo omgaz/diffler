@@ -41,7 +41,7 @@ Tests
 
 [![Build Status](https://travis-ci.org/omgaz/js-diff.svg?branch=master)](https://travis-ci.org/omgaz/js-diff)
 
-If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Karma and PhantomJS.
+If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Karma and ChromeHeadless.
 
     npm install
-    npm test 
+    npm test
