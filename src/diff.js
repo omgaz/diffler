@@ -9,7 +9,7 @@ function getDiff(obj1, obj2) {
 
   // Iterate over obj1 looking for removals and differences in existing values
   for (var key in obj1) {
-    if(obj1.hasOwnProperty(key) && typeof obj1[key] !== "function") { // TODO: Could probably be a helper function
+    if(obj1.hasOwnProperty(key) && typeof obj1[key] !== "function") {
       var obj1Val	= obj1[key],
           obj2Val	= obj2[key];
 
@@ -18,10 +18,10 @@ function getDiff(obj1, obj2) {
         if(!diff) { diff = {}; }
         diff[key] = {
           from: obj1Val,
-          to:   null // using null to specify that the value is empty in obj2
+          to: null // using null to specify that the value is empty in obj2
         };
       }
-      
+
       // If property is an object then we need to recursively go down the rabbit hole
       else if(typeof obj1Val === "object") {
         var tempDiff = this.getDiff(obj1Val, obj2Val);
@@ -36,7 +36,7 @@ function getDiff(obj1, obj2) {
         if(!diff) { diff = {}; }
         diff[key] = {
           from: obj1Val,
-          to:   obj2Val
+          to: obj2Val
         };
       }
     }
@@ -47,12 +47,12 @@ function getDiff(obj1, obj2) {
     if(obj2.hasOwnProperty(key) && typeof obj2[key] !== "function") {
       var obj1Val	= obj1[key],
           obj2Val	= obj2[key];
-          
+
       if (!(key in obj1)) {
         if(!diff) { diff = {}; }
         diff[key] = {
           from: null,
-          to:   obj2Val
+          to: obj2Val
         };
       }
     }
