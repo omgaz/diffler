@@ -29,19 +29,19 @@ npm install diffler
 
 ### Return
 
-If no difference: returns `{}` *(empty object)*
+If same: returns `{}` *(empty object)*
 
-If difference: A JSON object with preserved path structure. The resulting values will be an object with `from` and `to` fields.
+If different: A JSON object with preserved path structure. The resulting values will be an object with `from` and `to` fields.
 
 ### Example
 
 ```js
-const jsDiff = require('diffler');
+const diffler = require('diffler');
 
 const before = { name: "omgaz", location: "London" };
 const after = { name: "omgaz", location: "Melbourne" };
 
-const difference = jsDiff(before, after);
+const difference = diffler(before, after);
 console.log(difference); // { location: { from: "London", to: "Melbourne" } }
 ```
 
