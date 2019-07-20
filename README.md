@@ -1,47 +1,58 @@
-js-diff
-=======
+<div align="center">
+	<img src="stuff/AppIcon-readme.png" height="200" />
+	<h1>diffler</h1>
+	<p>
+		<b>A recursive JSON comparison script for humans</b>
+	</p>
+	<br>
+	<br>
+</div>
 
-[![Build Status](https://travis-ci.org/omgaz/js-diff.svg?branch=master)](https://travis-ci.org/omgaz/js-diff)
+## Motivation
 
-A basic JavaScript object comparison script that will iterate, recursivly, through two JSON objects to compare differences.
+To compare JSON objects containing asset metadata for a digital library. Upon change of any metadata, we'd store these changes as an audit trail and email asset stakeholders for review and approval of the changes.
 
-This was built for a project in which I had a JSON object of user data that I cached on page load and compared against an edited version on save. I used this information to construct email summaries of changed behaviour as well as provide a detailed audit trail of actions.
+## Dependencies
 
-Code
-----
-Code can be found under `src` at [src/diff.js](src/diff.js). That's all you need to worry about and the code has no dependencies on any library. NodeJS and all the other files are purely for running tests.
+diffler is written with Node v12 in mind.
+Tests depend on [Mocha](https://mochajs.org/).
 
-Params
-------
-`obj1` and `obj2` are two objects to be compared.
+## Usage
 
-Return
-------
-Returns `false` if no differences are found.
-Returns an `object` if differences are found. The object will maintain path structure where the value fot he changed key/value pair is highlighted by from and to fields.
+```bash
+npm install diffler
+```
 
-Example
--------
+### Params
 
-    var x = { name: "omgaz", location: "London" };
-    var y = { name: "omgaz", location: "Melbourne" };
+`obj1` and `obj2` are two JSON objects for comparison.
 
-    getDiff(x, y);
+### Return
 
-    // Returns object
-    {
-      location: {
-        from: "London",
-        to:   "Melbourne"
-      }
-    }
+If no difference: returns `{}` *(empty object)*
+
+If difference: A JSON object with preserved path structure. The resulting values will be an object with `from` and `to` fields.
+
+### Example
+
+```js
+const jsDiff = require('diffler');
+
+const before = { name: "omgaz", location: "London" };
+const after = { name: "omgaz", location: "Melbourne" };
+
+const difference = jsDiff(before, after);
+console.log(difference); // { location: { from: "London", to: "Melbourne" } }
+```
 
 Tests
 -----
 
 [![Build Status](https://travis-ci.org/omgaz/js-diff.svg?branch=master)](https://travis-ci.org/omgaz/js-diff)
 
-If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Karma and ChromeHeadless.
+If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Mocha.
 
-    npm install
-    npm test
+```bash
+  npm install
+  npm test
+```
