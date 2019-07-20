@@ -1,15 +1,16 @@
-/*******
- * JS-Diff by Gary Chisholm
- * All we're going to do is read in two objects. Iterate over them and return the differences.
- * Distributed under the MIT license.
- * The software is provided "as is", without warranty of any kind, express or implied.
- ******/
-function getDiff(obj1, obj2) {
-  var diff = false;
+
+/**
+ * Read in two objects. Iterate over them and return the differences.
+ * @param {object} obj1
+ * @param {object} obj2
+ * @returns {object}
+ */
+function diffler(obj1, obj2) {
+  var diff = {};
 
   // Iterate over obj1 looking for removals and differences in existing values
   for (var key in obj1) {
-    if(obj1.hasOwnProperty(key) && typeof obj1[key] !== "function") {
+    if(obj1.hasOwnProperty(key) && typeof obj1[key] !== 'function') {
       var obj1Val	= obj1[key],
           obj2Val	= obj2[key];
 
@@ -23,8 +24,8 @@ function getDiff(obj1, obj2) {
       }
 
       // If property is an object then we need to recursively go down the rabbit hole
-      else if(typeof obj1Val === "object") {
-        var tempDiff = this.getDiff(obj1Val, obj2Val);
+      else if(typeof obj1Val === 'object') {
+        var tempDiff = diffler(obj1Val, obj2Val);
         if(tempDiff) {
           if(!diff) { diff = {}; }
           diff[key] = tempDiff;
@@ -44,7 +45,7 @@ function getDiff(obj1, obj2) {
 
   // Iterate over obj2 looking for any new additions
   for (key in obj2) {
-    if(obj2.hasOwnProperty(key) && typeof obj2[key] !== "function") {
+    if(obj2.hasOwnProperty(key) && typeof obj2[key] !== 'function') {
       var obj1Val	= obj1[key],
           obj2Val	= obj2[key];
 
@@ -60,3 +61,5 @@ function getDiff(obj1, obj2) {
 
   return diff;
 };
+
+module.exports = diffler;

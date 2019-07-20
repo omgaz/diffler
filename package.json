@@ -1,24 +1,26 @@
 {
-  "name": "js-diff",
-  "version": "0.0.2",
-  "description": "A recursive JavaScript object comparison script",
-  "main": "diff.js",
+  "name": "diffler",
+  "version": "1.0.0",
+  "description": "A recursive JSON comparison script for humans",
+  "main": "./src/index.js",
   "dependencies": {},
   "devDependencies": {
-    "jasmine-core": "^2.8.0",
-    "karma": "^1.7.1",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.0"
+    "mocha": "^6.2.0"
   },
   "scripts": {
-    "test": "echo \"Running Karma Tests\" && karma start karma.conf.js --single-run"
+    "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/omgaz/js-diff.git"
   },
   "keywords": [
-    "diff"
+    "recursive",
+    "difference",
+    "comparison",
+    "compare",
+    "diff",
+    "js-diff"
   ],
   "author": "Gary Chisholm",
   "license": "MIT",
