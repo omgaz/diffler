@@ -8,7 +8,8 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js"
+    "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js",
+    "bench": "echo \"Running Performance Benchmark\" && node ./tests/performance.js"
   },
   "repository": {
     "type": "git",
