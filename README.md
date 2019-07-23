@@ -48,7 +48,7 @@ console.log(difference); // { location: { from: "London", to: "Melbourne" } }
 Tests
 -----
 
-[![Build Status](https://travis-ci.org/omgaz/js-diff.svg?branch=master)](https://travis-ci.org/omgaz/js-diff)
+[![Build Status](https://travis-ci.org/omgaz/diffler.svg?branch=master)](https://travis-ci.org/omgaz/diffler)
 
 If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Mocha.
 
