@@ -1,6 +1,6 @@
 {
   "name": "diffler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A recursive JSON comparison script for humans",
   "main": "./src/index.js",
   "dependencies": {},
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/omgaz/js-diff.git"
+    "url": "https://github.com/omgaz/diffler.git"
   },
   "keywords": [
     "recursive",
@@ -26,7 +26,7 @@
   "author": "Gary Chisholm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/omgaz/js-diff/issues"
+    "url": "https://github.com/omgaz/diffler/issues"
   },
-  "homepage": "https://github.com/omgaz/js-diff"
+  "homepage": "https://github.com/omgaz/diffler"
 }
