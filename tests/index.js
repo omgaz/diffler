@@ -1,9 +1,9 @@
 const assert = require('assert');
 const diffler = require('../src');
 
-describe('getDiff', function() {
-  describe('simple checks', function() {
-    it('returns false when no changes detected', function() {
+describe('getDiff', () => {
+  describe('simple checks', () => {
+    it('returns false when no changes detected', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = { name: 'gary' };
       const difference = diffler(testObjectA, testObjectB);
@@ -11,7 +11,7 @@ describe('getDiff', function() {
       assert.deepEqual(difference, {});
     });
 
-    it('should detect a single property change', function() {
+    it('should detect a single property change', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = { name: 'cindy' };
       const difference = diffler(testObjectA, testObjectB);
@@ -23,7 +23,7 @@ describe('getDiff', function() {
       assert.equal(difference.name.to, 'cindy');
     });
 
-    it('should detect no changes', function() {
+    it('should detect no changes', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = { name: 'gary' };
       const difference = diffler(testObjectA, testObjectB);
@@ -31,7 +31,7 @@ describe('getDiff', function() {
       assert.equal(Object.keys(difference).length, 0);
     });
 
-    it('should detect type changes', function() {
+    it('should detect type changes', () => {
       const testObjectA = { name: '1' };
       const testObjectB = { name: 1 };
       const difference = diffler(testObjectA, testObjectB);
@@ -44,8 +44,8 @@ describe('getDiff', function() {
     });
   });
 
-  describe('multiple checks', function() {
-    it('should detect a nested property change', function() {
+  describe('multiple checks', () => {
+    it('should detect a nested property change', () => {
       const testObjectA = { name: 'gary', age: 33, weight: { unit: 'kg', value: 80 } };
       const testObjectB = { name: 'gary', age: 33, weight: { unit: 'kg', value: 79 } };
       const difference = diffler(testObjectA, testObjectB);
@@ -57,7 +57,7 @@ describe('getDiff', function() {
       assert.equal(difference.weight.value.to, 79);
     });
 
-    it('should detect multiple nested property change', function() {
+    it('should detect multiple nested property change', () => {
       const testObjectA = { name: 'gary', age: 33, weight: { unit: 'kg', value: 80 } };
       const testObjectB = { name: 'gary', age: 34, weight: { unit: 'stone', value: 12.4 } };
       const difference = diffler(testObjectA, testObjectB);
@@ -76,10 +76,10 @@ describe('getDiff', function() {
     });
   });
 
-  describe('property removals', function() {
-    it('should detect a single property removal as null', function() {
+  describe('property removals', () => {
+    it('should detect a single property removal as null', () => {
       const testObjectA = { name: 'gary' };
-      const testObjectB = { };
+      const testObjectB = {};
       const difference = diffler(testObjectA, testObjectB);
 
       assert.equal(Object.keys(difference).length, 1);
@@ -89,7 +89,7 @@ describe('getDiff', function() {
       assert.equal(difference.name.to, null);
     });
 
-    it('should detect a nested property removal as null', function() {
+    it('should detect a nested property removal as null', () => {
       const testObjectA = { name: 'gary', age: 33, weight: { unit: 'kg', value: 80 } };
       const testObjectB = { name: 'gary', age: 33 };
       const difference = diffler(testObjectA, testObjectB);

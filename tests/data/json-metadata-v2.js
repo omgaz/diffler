@@ -22,5 +22,5 @@ module.exports = {
       },
       keywords: ['app logo', 'logo', 'readme'],
     },
-  }
-}
+  },
+};
