@@ -32,6 +32,6 @@ module.exports = {
         name: 'Gary',
       },
       keywords: ['app logo', 'logo', 'readme'],
-    }
-  }
-}
+    },
+  },
+};

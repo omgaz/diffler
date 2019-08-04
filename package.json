@@ -5,10 +5,16 @@
   "main": "./src/index.js",
   "dependencies": {},
   "devDependencies": {
-    "mocha": "^6.2.0"
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jsdoc": "^15.8.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "mocha": "^6.2.0",
+    "prettier": "^1.18.2"
   },
   "scripts": {
     "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js",
+    "lint": "eslint .",
     "bench": "echo \"Running Performance Benchmark\" && node ./tests/performance.js"
   },
   "repository": {

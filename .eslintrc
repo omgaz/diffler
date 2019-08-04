@@ -1,0 +1,72 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 2019
+  },
+  "env": {
+    "es6": true,
+    "mocha": true,
+    "node": true
+  },
+  "globals": {
+    "document": false,
+    "navigator": false,
+    "window": false
+  },
+  "extends": [
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "jsdoc"
+  ],
+  "rules": {
+    "func-names": "error",
+    "global-require": "error",
+    "id-length": [
+      "error",
+      {
+        "exceptions": [
+          "i",
+          "j",
+          "x",
+          "y",
+          "z"
+        ],
+        "min": 2,
+        "properties": "never"
+      }
+    ],
+    "jsdoc/check-param-names": "error",
+    "jsdoc/check-tag-names": "error",
+    "jsdoc/check-types": "error",
+    "jsdoc/newline-after-description": "error",
+    "jsdoc/require-description-complete-sentence": "error",
+    "jsdoc/require-param": "error",
+    "jsdoc/require-param-description": "error",
+    "jsdoc/require-param-type": "error",
+    "jsdoc/require-returns-description": "error",
+    "jsdoc/require-returns-type": "error",
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "__config",
+          "__setMockValues"
+        ]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 120,
+        "singleQuote": true,
+        "trailingComma": "all"
+      }
+    ]
+  }
+}
