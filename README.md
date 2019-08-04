@@ -19,6 +19,8 @@ Tests depend on [Mocha](https://mochajs.org/).
 
 ## Usage
 
+[![npm version](https://badge.fury.io/js/diffler.png)](https://badge.fury.io/js/diffler)
+
 ```bash
 npm install diffler
 ```
