@@ -47,8 +47,7 @@ const difference = diffler(before, after);
 console.log(difference); // { location: { from: "London", to: "Melbourne" } }
 ```
 
-Tests
------
+## Tests
 
 [![Build Status](https://travis-ci.org/omgaz/diffler.svg?branch=master)](https://travis-ci.org/omgaz/diffler)
 
