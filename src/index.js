@@ -4,7 +4,6 @@
  */
 
 /**
- * @preserve
  * Read in two objects. Iterate over them and return the differences.
  *
  * @param {object} obj1 First object to compare from.
@@ -16,7 +15,7 @@ function diffler(obj1, obj2) {
 
   // Iterate over obj1 looking for removals and differences in existing values
   for (var key in obj1) {
-    if (obj1.hasOwnProperty(key) && typeof obj1[key] !== "function") {
+    if (obj1.hasOwnProperty(key) && typeof obj1[key] !== 'function') {
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 
@@ -29,7 +28,7 @@ function diffler(obj1, obj2) {
       }
 
       // If property is an object then we need to recursively go down the rabbit hole
-      else if (typeof obj1Val === "object") {
+      else if (typeof obj1Val === 'object') {
         var tempDiff = diffler(obj1Val, obj2Val);
         if (Object.keys(tempDiff).length > 0) {
           if (tempDiff) {
@@ -50,7 +49,7 @@ function diffler(obj1, obj2) {
 
   // Iterate over obj2 looking for any new additions
   for (key in obj2) {
-    if (obj2.hasOwnProperty(key) && typeof obj2[key] !== "function") {
+    if (obj2.hasOwnProperty(key) && typeof obj2[key] !== 'function') {
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 
