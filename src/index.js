@@ -1,4 +1,10 @@
 /**
+ * @license MIT https://github.com/omgaz/diffler
+ * Author: Gary Chisholm @omgaz
+ */
+
+/**
+ * @preserve
  * Read in two objects. Iterate over them and return the differences.
  *
  * @param {object} obj1 First object to compare from.

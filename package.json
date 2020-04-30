@@ -9,14 +9,14 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-jsdoc": "^24.0.0",
     "eslint-plugin-prettier": "^3.1.3",
-    "minify": "^5.1.1",
     "mocha": "^7.1.2",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "uglify-js": "^3.9.1"
   },
   "scripts": {
     "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js",
     "lint": "eslint .",
-    "minify": "echo \"Running Minify\" && minify ./src/index.js > ./dist/index.js",
+    "build": "echo \"Running Build\" && uglifyjs ./src/index.js --comments --compress --mangle -o ./dist/index.js",
     "bench": "echo \"Running Performance Benchmark\" && node ./tests/performance.js"
   },
   "repository": {
@@ -29,7 +29,8 @@
     "comparison",
     "compare",
     "diff",
-    "js-diff"
+    "js-diff",
+    "deep-diff"
   ],
   "author": "Gary Chisholm",
   "license": "MIT",
