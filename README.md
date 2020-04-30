@@ -31,14 +31,14 @@ npm install diffler
 
 ### Return
 
-If same: returns `{}` *(empty object)*
+If same: returns `{}` _(empty object)_
 
 If different: A JSON object with preserved path structure. The resulting values will be an object with `from` and `to` fields.
 
 ### Example
 
 ```js
-const diffler = require('diffler');
+const diffler = require("diffler");
 
 const before = { name: "omgaz", location: "London" };
 const after = { name: "omgaz", location: "Melbourne" };
