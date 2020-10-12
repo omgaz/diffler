@@ -1,11 +1,11 @@
 <div align="center">
-	<img src="stuff/AppIcon-readme.png" height="200" />
-	<h1>diffler</h1>
-	<p>
-		<b>A recursive JSON comparison script for humans</b>
-	</p>
-	<br>
-	<br>
+  <img src="stuff/AppIcon-readme.png" height="200" />
+  <h1>diffler</h1>
+  <p>
+    <b>A recursive JSON comparison script for humans</b>
+  </p>
+  <br>
+  <br>
 </div>
 
 ## Motivation
@@ -19,7 +19,7 @@ Tests depend on [Mocha](https://mochajs.org/).
 
 ## Usage
 
-[![npm version](https://badge.fury.io/js/diffler.png)](https://badge.fury.io/js/diffler)
+[![npm version](https://badge.fury.io/js/diffler.png)](https://www.npmjs.com/package/diffler)
 
 ```bash
 npm install diffler
