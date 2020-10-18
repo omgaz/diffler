@@ -58,13 +58,20 @@ describe('getDiff', () => {
       const testObjectB = { arr: ['three', 'two', 'one'] };
       const difference = diffler(testObjectA, testObjectB);
       assert.strictEqual(Object.keys(difference).length, 1);
-      assert.deepStrictEqual(difference, { arr: { 0: { from: 'one', to: 'three' }, 2: { from: 'three', to: 'one' } } });
+      assert.deepStrictEqual(difference, {
+        arr: {
+          0: { from: 'one', to: 'three' },
+          2: { from: 'three', to: 'one' },
+        },
+      });
     });
 
     it('returns false when array order shifted but respectArrayOrder is false', () => {
       const testObjectA = { arr: ['one', 'two', 'three'] };
       const testObjectB = { arr: ['three', 'two', 'one'] };
-      const difference = diffler(testObjectA, testObjectB, { respectArrayOrder: false });
+      const difference = diffler(testObjectA, testObjectB, {
+        respectArrayOrder: false,
+      });
       assert.strictEqual(Object.keys(difference).length, 0);
       assert.deepStrictEqual(difference, {});
     });
@@ -72,7 +79,9 @@ describe('getDiff', () => {
     it('returns false when array order shifted but respectArrayOrder is false as numbers', () => {
       const testObjectA = { arr: [1, 2, 3] };
       const testObjectB = { arr: [2, 3, 1] };
-      const difference = diffler(testObjectA, testObjectB, { respectArrayOrder: false });
+      const difference = diffler(testObjectA, testObjectB, {
+        respectArrayOrder: false,
+      });
       assert.strictEqual(Object.keys(difference).length, 0);
       assert.deepStrictEqual(difference, {});
     });
@@ -80,21 +89,25 @@ describe('getDiff', () => {
     it('returns false when array order shifted but respectArrayOrder is false as mixed', () => {
       const testObjectA = { arr: [1, 'two', 3] };
       const testObjectB = { arr: ['two', 3, 1] };
-      const difference = diffler(testObjectA, testObjectB, { respectArrayOrder: false });
+      const difference = diffler(testObjectA, testObjectB, {
+        respectArrayOrder: false,
+      });
       assert.strictEqual(Object.keys(difference).length, 0);
       assert.deepStrictEqual(difference, {});
     });
 
-    it('returns diff when array order shifted for non-primitives and respectArrayOrder is false', () => {
+    it('returns no diff when array order shifted for non-primitives and respectArrayOrder is false', () => {
       const testObjectA = {
-        myArray: [{ foo: 'bar' }, { baz: 'bat' }],
+        myArray: ['a string', { foo: 'bar' }, 1, { baz: 'bat' }],
       };
 
       const testObjectB = {
-        myArray: [{ baz: 'bat' }, { foo: 'bar' }],
+        myArray: [{ baz: 'bat' }, { foo: 'bar' }, 1, 'a string'],
       };
-      const difference = diffler(testObjectA, testObjectB, { respectArrayOrder: false });
-      assert.strictEqual(Object.keys(difference).length, 1);
+      const difference = diffler(testObjectA, testObjectB, {
+        respectArrayOrder: false,
+      });
+      assert.strictEqual(Object.keys(difference).length, 0);
       assert.deepStrictEqual(difference, {});
     });
 
@@ -103,7 +116,9 @@ describe('getDiff', () => {
       const testObjectB = { arr: ['one', 'two', 'three'] };
       const difference = diffler(testObjectA, testObjectB);
       assert.strictEqual(Object.keys(difference).length, 1);
-      assert.deepStrictEqual(difference, { arr: { 2: { from: null, to: 'three' } } });
+      assert.deepStrictEqual(difference, {
+        arr: { 2: { from: null, to: 'three' } },
+      });
     });
 
     it('returns change when array item removed', () => {
@@ -111,7 +126,9 @@ describe('getDiff', () => {
       const testObjectB = { arr: ['one', 'two'] };
       const difference = diffler(testObjectA, testObjectB);
       assert.strictEqual(Object.keys(difference).length, 1);
-      assert.deepStrictEqual(difference, { arr: { 2: { from: 'three', to: null } } });
+      assert.deepStrictEqual(difference, {
+        arr: { 2: { from: 'three', to: null } },
+      });
     });
 
     it('returns change and removal when array item removed from middle', () => {
@@ -119,7 +136,12 @@ describe('getDiff', () => {
       const testObjectB = { arr: ['one', 'three'] };
       const difference = diffler(testObjectA, testObjectB);
       assert.strictEqual(Object.keys(difference).length, 1);
-      assert.deepStrictEqual(difference, { arr: { 1: { from: 'two', to: 'three' }, 2: { from: 'three', to: null } } });
+      assert.deepStrictEqual(difference, {
+        arr: {
+          1: { from: 'two', to: 'three' },
+          2: { from: 'three', to: null },
+        },
+      });
     });
   });
 

@@ -7,7 +7,15 @@ function isArray(toCheck) {
   return typeof toCheck === 'object' && Boolean(toCheck.length);
 }
 
-const defaultOptions = {
+function isPrimitive(toCheck) {
+  return toCheck !== Object(toCheck);
+}
+
+function toPrimitive(val) {
+  return isPrimitive(val) ? val : JSON.stringify(val);
+}
+
+var defaultOptions = {
   respectArrayOrder: true,
 };
 
@@ -39,11 +47,11 @@ function diffler(obj1, obj2, options = defaultOptions) {
 
       // If property is an object then we need to recursively go down the rabbit hole
       else if (typeof obj1Val === 'object') {
-        let obj1ValForDiff = obj1Val;
-        let obj2ValForDiff = obj2Val;
+        var obj1ValForDiff = obj1Val;
+        var obj2ValForDiff = obj2Val;
         if (!options.respectArrayOrder && isArray(obj1Val) && isArray(obj2Val)) {
-          obj1ValForDiff = obj1Val.sort();
-          obj2ValForDiff = obj2Val.sort();
+          obj1ValForDiff = obj1Val.map(toPrimitive).sort();
+          obj2ValForDiff = obj2Val.map(toPrimitive).sort();
         }
         var tempDiff = diffler(obj1ValForDiff, obj2ValForDiff);
         if (Object.keys(tempDiff).length > 0) {
