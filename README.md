@@ -47,6 +47,54 @@ const difference = diffler(before, after);
 console.log(difference); // { location: { from: "London", to: "Melbourne" } }
 ```
 
+## Options
+
+> Experimental
+
+```shell
+npm i diffler@next
+```
+
+### `respectArrayOrder` defaults to `true`
+
+If you don't care about the order of an array you can disable like so:
+
+```js
+const diffler = require("diffler");
+
+const before = { name: "omgaz", locations: ["London", "Melbourne"] };
+const after = { name: "omgaz", locations: ["Melbourne", "London"] };
+
+const difference = diffler(before, after, { respectArrayOrder: false });
+console.log(difference); // {}
+```
+
+However, be aware that additions and removals change the overall shape of the array and so will be seen as an entire array change AFTER the addition and removal.
+
+```js
+const diffler = require("diffler");
+
+const before = { name: "omgaz", locations: ["London", "Hong Kong", "Melbourne"] };
+const after = { name: "omgaz", locations: ["London", "Melbourne", "Hong Kong" ] };
+
+const difference = diffler(before, after, { respectArrayOrder: false });
+console.log(difference); // { locations: { 1: { from: "Hong Kong", to: "Melbourne" }, 2: { from: "Melbourne", to: "Hong Kong" }
+```
+
+My advice is to use associative arrays if you do not care about order.
+
+```js
+const diffler = require("diffler");
+
+const before = { name: "omgaz", locations: { Melbourne: "Melbourne", London: "London" } };
+const after = { name: "omgaz", locations: { London: "London", Melbourne: "Melbourne" } };
+
+const difference = diffler(before, after, { respectArrayOrder: false });
+console.log(difference); // { }
+```
+
+Maybe in the future, diffler will do this internally and be able to return array new array indexes for these values, it is still my current belief that arrays are ordered and should preserve order.
+
 ## Tests
 
 [![Build Status](https://travis-ci.org/omgaz/diffler.svg?branch=master)](https://travis-ci.org/omgaz/diffler)
