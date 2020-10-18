@@ -3,14 +3,24 @@
  * Author: Gary Chisholm @omgaz
  */
 
+function isArray(toCheck) {
+  return typeof toCheck === 'object' && Boolean(toCheck.length);
+}
+
+const defaultOptions = {
+  respectArrayOrder: true,
+};
+
 /**
  * Read in two objects. Iterate over them and return the differences.
  *
  * @param {object} obj1 First object to compare from.
  * @param {object} obj2 Second object to compare against obj1.
+ * @param {object} options Configure custom behaviour of diffler.
+ * @param {boolean} options.respectArrayOrder Whether to care if arrays are ordered defaults to true.
  * @returns {object} Nested json object of changed properties containing a from and to key.
  */
-function diffler(obj1, obj2) {
+function diffler(obj1, obj2, options = defaultOptions) {
   var diff = {};
 
   // Iterate over obj1 looking for removals and differences in existing values
@@ -29,7 +39,13 @@ function diffler(obj1, obj2) {
 
       // If property is an object then we need to recursively go down the rabbit hole
       else if (typeof obj1Val === 'object') {
-        var tempDiff = diffler(obj1Val, obj2Val);
+        let obj1ValForDiff = obj1Val;
+        let obj2ValForDiff = obj2Val;
+        if (!options.respectArrayOrder && isArray(obj1Val) && isArray(obj2Val)) {
+          obj1ValForDiff = obj1Val.sort();
+          obj2ValForDiff = obj2Val.sort();
+        }
+        var tempDiff = diffler(obj1ValForDiff, obj2ValForDiff);
         if (Object.keys(tempDiff).length > 0) {
           if (tempDiff) {
             diff[key] = tempDiff;
