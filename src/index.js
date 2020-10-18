@@ -29,7 +29,10 @@ var defaultOptions = {
  * @param {boolean} options.respectArrayOrder Whether to care if arrays are ordered defaults to true.
  * @returns {object} Nested json object of changed properties containing a from and to key.
  */
-function diffler(obj1, obj2, options = defaultOptions) {
+function diffler(obj1, obj2, options) {
+  if (typeof options === "undefined") {
+    options = defaultOptions;
+  }
   var diff = {};
 
   // Iterate over obj1 looking for removals and differences in existing values
