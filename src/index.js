@@ -3,19 +3,41 @@
  * Author: Gary Chisholm @omgaz
  */
 
+function isArray(toCheck) {
+  return typeof toCheck === "object" && Boolean(toCheck.length);
+}
+
+function isPrimitive(toCheck) {
+  return toCheck !== Object(toCheck);
+}
+
+function validate(val) {
+  if (isPrimitive(val)) return val;
+  throw new Error("Cannot ignore array ordering on non-primitive values");
+}
+
+var defaultOptions = {
+  respectArrayOrder: true,
+};
+
 /**
  * Read in two objects. Iterate over them and return the differences.
  *
  * @param {object} obj1 First object to compare from.
  * @param {object} obj2 Second object to compare against obj1.
+ * @param {object} options Configure custom behaviour of diffler.
+ * @param {boolean} options.respectArrayOrder Whether to care if arrays are ordered defaults to true.
  * @returns {object} Nested json object of changed properties containing a from and to key.
  */
-function diffler(obj1, obj2) {
+function diffler(obj1, obj2, options) {
+  if (typeof options === "undefined") {
+    options = defaultOptions;
+  }
   var diff = {};
 
   // Iterate over obj1 looking for removals and differences in existing values
   for (var key in obj1) {
-    if (obj1.hasOwnProperty(key) && typeof obj1[key] !== 'function') {
+    if (obj1.hasOwnProperty(key) && typeof obj1[key] !== "function") {
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 
@@ -28,8 +50,20 @@ function diffler(obj1, obj2) {
       }
 
       // If property is an object then we need to recursively go down the rabbit hole
-      else if (typeof obj1Val === 'object') {
-        var tempDiff = diffler(obj1Val, obj2Val);
+      else if (typeof obj1Val === "object") {
+        var obj1ValForDiff = obj1Val;
+        var obj2ValForDiff = obj2Val;
+        if (isArray(obj1Val) && isArray(obj2Val)) {
+          // TODO: This is messy, but I've found a bug with arrays of mixed types
+          // I need to clean this up later.
+          obj1Val.map(validate);
+          obj2Val.map(validate);
+          if (!options.respectArrayOrder) {
+            obj1ValForDiff = obj1Val.sort();
+            obj2ValForDiff = obj2Val.sort();
+          }
+        }
+        var tempDiff = diffler(obj1ValForDiff, obj2ValForDiff, options);
         if (Object.keys(tempDiff).length > 0) {
           if (tempDiff) {
             diff[key] = tempDiff;
@@ -49,7 +83,7 @@ function diffler(obj1, obj2) {
 
   // Iterate over obj2 looking for any new additions
   for (key in obj2) {
-    if (obj2.hasOwnProperty(key) && typeof obj2[key] !== 'function') {
+    if (obj2.hasOwnProperty(key) && typeof obj2[key] !== "function") {
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 
