@@ -50,6 +50,14 @@ function diffler(obj1, obj2) {
   // Iterate over obj2 looking for any new additions
   for (key in obj2) {
     if (obj2.hasOwnProperty(key) && typeof obj2[key] !== 'function') {
+      if (obj1 === null) {
+        diff[key] = {
+          from: obj1,
+          to: obj2[key],
+        };
+        break;
+      }
+
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 

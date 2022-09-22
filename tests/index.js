@@ -120,5 +120,18 @@ describe('getDiff', () => {
       assert.deepEqual(difference.weight.from, { unit: 'kg', value: 80 });
       assert.equal(difference.weight.to, null);
     });
+
+    it('should detect comparisons with null', () => {
+      const differenceFrom = diffler({ a: null, b: 'things' }, { a: 'more', b: 'things' });
+      const differenceTo = diffler({ a: 'some', b: 'things' }, { a: null, b: 'things' });
+      const same = diffler({ a: null, b: 'things' }, { a: null, b: 'things' });
+
+      assert.equal(Object.keys(differenceFrom).length, 1);
+      assert.equal(Object.keys(differenceTo).length, 1);
+      assert.equal(Object.keys(same).length, 0);
+
+      assert.equal(differenceFrom.a.from, null);
+      assert.equal(differenceTo.a.to, null);
+    });
   });
 });
