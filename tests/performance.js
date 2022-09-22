@@ -8,7 +8,7 @@ function suite() {
 }
 
 const ops = benchmarker.bench10(suite);
-const benchmark = 217203; // update value to set new benchmark
+const benchmark = 255538; // update value to set new benchmark
 console.info(`Executed ${ops} ops/s`);
 const opsDiff = benchmark / ops;
 const opsDiffAsPercentage = Math.round(opsDiff * 100);
