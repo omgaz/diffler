@@ -133,5 +133,18 @@ describe('getDiff', () => {
       assert.equal(differenceFrom.a.from, null);
       assert.equal(differenceTo.a.to, null);
     });
+
+    it('should detect comparisons with defined undefined', () => {
+      const differenceFrom = diffler({ a: undefined, b: 'things' }, { a: 'more', b: 'things' });
+      const differenceTo = diffler({ a: 'some', b: 'things' }, { a: undefined, b: 'things' });
+      const same = diffler({ a: undefined, b: 'things' }, { a: undefined, b: 'things' });
+
+      assert.equal(Object.keys(differenceFrom).length, 1);
+      assert.equal(Object.keys(differenceTo).length, 1);
+      assert.equal(Object.keys(same).length, 0);
+
+      assert.equal(differenceFrom.a.from, undefined);
+      assert.equal(differenceTo.a.to, undefined);
+    });
   });
 });
