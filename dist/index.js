@@ -2,4 +2,4 @@
  * @license MIT https://github.com/omgaz/diffler
  * Author: Gary Chisholm @omgaz
  */
-function diffler(o,f){var n,r,t,e,i={};for(n in o){o.hasOwnProperty(n)&&"function"!=typeof o[n]&&(t=o[n],e=f[n],n in f?"object"==typeof t?(r=diffler(t,e),0<Object.keys(r).length&&r&&(i[n]=r)):t!==e&&(i[n]={from:t,to:e}):i[n]={from:t,to:null})}for(n in f){f.hasOwnProperty(n)&&"function"!=typeof f[n]&&(t=o[n],e=f[n],n in o||((i=i||{})[n]={from:null,to:e}))}return i}module.exports=diffler;
+function diffler(f,o){var r,t,e={};for(r in f)if(f.hasOwnProperty(r)&&"function"!=typeof f[r]){if(typeof(n=f[r])!=typeof(i=o[r])){e[r]={from:n,to:i};break}r in o?"object"==typeof n?(t=diffler(n,i),0<Object.keys(t).length&&t&&(e[r]=t)):n!==i&&(e[r]={from:n,to:i}):e[r]={from:n,to:null}}for(r in o)if(o.hasOwnProperty(r)&&"function"!=typeof o[r]){if(null===f){e[r]={from:f,to:o[r]};break}var n=f[r],i=o[r];r in f||((e=e||{})[r]={from:null,to:i})}return e}module.exports=diffler;
