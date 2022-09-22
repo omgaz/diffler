@@ -19,6 +19,14 @@ function diffler(obj1, obj2) {
       var obj1Val = obj1[key],
         obj2Val = obj2[key];
 
+      if (typeof obj1Val !== typeof obj2Val) {
+        diff[key] = {
+          from: obj1Val,
+          to: obj2Val,
+        };
+        break;
+      }
+
       // If property exists in obj1 and not in obj2 then it has been removed
       if (!(key in obj2)) {
         diff[key] = {
