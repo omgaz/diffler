@@ -4,80 +4,89 @@
  */
 
 /**
- * Read in two objects. Iterate over them and return the differences.
- *
- * @param {object} obj1 First object to compare from.
- * @param {object} obj2 Second object to compare against obj1.
- * @returns {object} Nested json object of changed properties containing a from and to key.
+ * @typedef {object} DiffResult
+ * @property {*} from Original value.
+ * @property {*} to New value.
  */
-function diffler(obj1, obj2) {
-  var diff = {};
 
-  // Iterate over obj1 looking for removals and differences in existing values
-  for (var key in obj1) {
-    if (obj1.hasOwnProperty(key) && typeof obj1[key] !== 'function') {
-      var obj1Val = obj1[key],
-        obj2Val = obj2[key];
+/**
+ * @param {any} value Value to check.
+ * @returns {boolean} True if value is a plain object.
+ */
+const isPlainObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
 
-      if (typeof obj1Val !== typeof obj2Val) {
-        diff[key] = {
-          from: obj1Val,
-          to: obj2Val,
-        };
-        break;
-      }
+/**
+ * @param {object} obj The object to check.
+ * @param {string} key The key to check in the object.
+ * @returns {boolean} True if value is a valid property.
+ */
+const isValidProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key) && typeof obj[key] !== 'function';
 
-      // If property exists in obj1 and not in obj2 then it has been removed
-      if (!(key in obj2)) {
-        diff[key] = {
-          from: obj1Val,
-          to: null, // using null to specify that the value is empty in obj2
-        };
-      }
+/**
+ * @param {any} val1 First value.
+ * @param {any} val2 Second value.
+ * @returns {DiffResult|null} Difference result or null if no change.
+ */
+const compareValues = (val1, val2) => {
+  // Different types
+  if (typeof val1 !== typeof val2) {
+    return { from: val1, to: val2 };
+  }
 
-      // If property is an object then we need to recursively go down the rabbit hole
-      else if (typeof obj1Val === 'object') {
-        var tempDiff = diffler(obj1Val, obj2Val);
-        if (Object.keys(tempDiff).length > 0) {
-          if (tempDiff) {
-            diff[key] = tempDiff;
-          }
-        }
-      }
+  // Handle arrays
+  if (Array.isArray(val1) && Array.isArray(val2)) {
+    const arrayDiff = {};
+    const maxLength = Math.max(val1.length, val2.length);
 
-      // If property is in both obj1 and obj2 and is different
-      else if (obj1Val !== obj2Val) {
-        diff[key] = {
-          from: obj1Val,
-          to: obj2Val,
-        };
-      }
+    for (let i = 0; i < maxLength; i++) {
+      const diff = compareValues(val1[i], val2[i]);
+      if (diff) arrayDiff[i] = diff;
+    }
+
+    return Object.keys(arrayDiff).length ? arrayDiff : null;
+  }
+
+  // Handle objects
+  if (isPlainObject(val1) && isPlainObject(val2)) {
+    const nestedDiff = diffler(val1, val2);
+    return Object.keys(nestedDiff).length ? nestedDiff : null;
+  }
+
+  // Compare values
+  return val1 !== val2 ? { from: val1, to: val2 } : null;
+};
+
+/**.
+ * Compares two objects and returns their differences
+ *
+ * @param {object} originalObj First object to compare
+ * @param {object} newObj Second object to compare against
+ * @returns {Object.<string, DiffResult>} Object containing changes
+ */
+function diffler(originalObj, newObj) {
+  const diff = {};
+
+  // Check for changes and removals
+  for (const key in originalObj) {
+    if (!isValidProperty(originalObj, key)) continue;
+
+    if (!(key in newObj)) {
+      diff[key] = { from: originalObj[key], to: null };
+      continue;
+    }
+
+    const difference = compareValues(originalObj[key], newObj[key]);
+    if (difference) {
+      diff[key] = difference;
     }
   }
 
-  // Iterate over obj2 looking for any new additions
-  for (key in obj2) {
-    if (obj2.hasOwnProperty(key) && typeof obj2[key] !== 'function') {
-      if (obj1 === null) {
-        diff[key] = {
-          from: obj1,
-          to: obj2[key],
-        };
-        break;
-      }
+  // Check for additions
+  for (const key in newObj) {
+    if (!isValidProperty(newObj, key)) continue;
 
-      var obj1Val = obj1[key],
-        obj2Val = obj2[key];
-
-      if (!(key in obj1)) {
-        if (!diff) {
-          diff = {};
-        }
-        diff[key] = {
-          from: null,
-          to: obj2Val,
-        };
-      }
+    if (!(key in originalObj)) {
+      diff[key] = { from: null, to: newObj[key] };
     }
   }
 

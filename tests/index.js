@@ -11,7 +11,7 @@ describe('getDiff', () => {
       assert.deepEqual(difference, {});
     });
 
-    it('should detect a single property change', () => {
+    it('detect a single property change', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = { name: 'cindy' };
       const difference = diffler(testObjectA, testObjectB);
@@ -23,7 +23,7 @@ describe('getDiff', () => {
       assert.equal(difference.name.to, 'cindy');
     });
 
-    it('should detect no changes', () => {
+    it('detect no changes', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = { name: 'gary' };
       const difference = diffler(testObjectA, testObjectB);
@@ -31,7 +31,7 @@ describe('getDiff', () => {
       assert.equal(Object.keys(difference).length, 0);
     });
 
-    it('should detect type changes', () => {
+    it('detect type changes', () => {
       const testObjectA = { name: '1' };
       const testObjectB = { name: 1 };
       const difference = diffler(testObjectA, testObjectB);
@@ -45,7 +45,7 @@ describe('getDiff', () => {
   });
 
   describe('multiple checks', () => {
-    it('should detect a nested property change', () => {
+    it('detect a nested property change', () => {
       const testObjectA = {
         name: 'gary',
         age: 33,
@@ -65,7 +65,7 @@ describe('getDiff', () => {
       assert.equal(difference.weight.value.to, 79);
     });
 
-    it('should detect multiple nested property change', () => {
+    it('detect multiple nested property change', () => {
       const testObjectA = {
         name: 'gary',
         age: 33,
@@ -93,7 +93,7 @@ describe('getDiff', () => {
   });
 
   describe('property removals', () => {
-    it('should detect a single property removal as null', () => {
+    it('detect a single property removal as null', () => {
       const testObjectA = { name: 'gary' };
       const testObjectB = {};
       const difference = diffler(testObjectA, testObjectB);
@@ -105,7 +105,7 @@ describe('getDiff', () => {
       assert.equal(difference.name.to, null);
     });
 
-    it('should detect a nested property removal as null', () => {
+    it('detect a nested property removal as null', () => {
       const testObjectA = {
         name: 'gary',
         age: 33,
@@ -121,7 +121,7 @@ describe('getDiff', () => {
       assert.equal(difference.weight.to, null);
     });
 
-    it('should detect comparisons with null', () => {
+    it('detect comparisons with null', () => {
       const differenceFrom = diffler({ a: null, b: 'things' }, { a: 'more', b: 'things' });
       const differenceTo = diffler({ a: 'some', b: 'things' }, { a: null, b: 'things' });
       const same = diffler({ a: null, b: 'things' }, { a: null, b: 'things' });
@@ -135,7 +135,7 @@ describe('getDiff', () => {
     });
 
     // https://github.com/omgaz/diffler/issues/31
-    it('should detect comparisons with defined undefined', () => {
+    it('detect comparisons with defined undefined', () => {
       const differenceFrom = diffler({ a: undefined, b: 'things' }, { a: 'more', b: 'things' });
       const differenceTo = diffler({ a: 'some', b: 'things' }, { a: undefined, b: 'things' });
       const same = diffler({ a: undefined, b: 'things' }, { a: undefined, b: 'things' });
@@ -149,7 +149,7 @@ describe('getDiff', () => {
     });
 
     // https://github.com/omgaz/diffler/issues/31
-    it('should detect comparisons with arrays of mixed types', () => {
+    it('detect comparisons with arrays of mixed types', () => {
       const difference = diffler({ a: [1], b: ['one'] }, { a: ['one'], b: [1] });
 
       assert.equal(Object.keys(difference).length, 2);
@@ -163,7 +163,7 @@ describe('getDiff', () => {
     });
 
     // https://github.com/omgaz/diffler/issues/31
-    it('should detect comparisons with arrays of mixed primitives and objects', () => {
+    it('detect comparisons with arrays of mixed primitives and objects', () => {
       const difference = diffler(
         { a: ['something'], b: [{ b: 'something' }] },
         { a: [{ a: 'something' }], b: ['something'] },
@@ -179,6 +179,55 @@ describe('getDiff', () => {
         b: 'something',
       });
       assert.equal(difference.b[0].to, 'something');
+    });
+
+    it('detect changes in arrays of objects', () => {
+      const testObjectA = {
+        items: [
+          { id: 1, value: 'a' },
+          { id: 2, value: 'b' },
+        ],
+      };
+      const testObjectB = {
+        items: [
+          { id: 1, value: 'a' },
+          { id: 2, value: 'c' },
+        ],
+      };
+      const difference = diffler(testObjectA, testObjectB);
+
+      assert.equal(Object.keys(difference).length, 1);
+      assert.equal(Object.keys(difference.items[1]).length, 1);
+      assert.equal(difference.items[1].value.from, 'b');
+      assert.equal(difference.items[1].value.to, 'c');
+    });
+
+    it('detect additions in arrays of objects', () => {
+      const testObjectA = { items: [{ id: 1, value: 'a' }] };
+      const testObjectB = {
+        items: [
+          { id: 1, value: 'a' },
+          { id: 2, value: 'b' },
+        ],
+      };
+      const difference = diffler(testObjectA, testObjectB);
+
+      assert.equal(Object.keys(difference).length, 1);
+      assert.deepEqual(difference.items[1], { from: undefined, to: { id: 2, value: 'b' } });
+    });
+
+    it('detect removals in arrays of objects', () => {
+      const testObjectA = {
+        items: [
+          { id: 1, value: 'a' },
+          { id: 2, value: 'b' },
+        ],
+      };
+      const testObjectB = { items: [{ id: 1, value: 'a' }] };
+      const difference = diffler(testObjectA, testObjectB);
+
+      assert.equal(Object.keys(difference).length, 1);
+      assert.deepEqual(difference.items[1], { from: { id: 2, value: 'b' }, to: undefined });
     });
   });
 });
