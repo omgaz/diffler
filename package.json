@@ -1,6 +1,6 @@
 {
   "name": "diffler",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A recursive JSON comparison script for humans",
   "main": "./dist/index.js",
   "devDependencies": {
