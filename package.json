@@ -30,6 +30,7 @@
     "lint:fix": "biome check --fix .",
     "check-types": "tsc --noEmit",
     "bench": "vitest bench --run",
+    "release": "./scripts/release.sh",
     "prepare": "lefthook install"
   },
   "engines": {

@@ -14,8 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -37,37 +35,30 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Resolve version bump
-        id: bump
+      - name: Check if version is already published
+        id: check
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          if [ -z "$LAST_TAG" ]; then
-            RANGE="HEAD"
+          VERSION=$(node -p "require('./package.json').version")
+          if git tag -l "v${VERSION}" | grep -q .; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
           else
-            RANGE="${LAST_TAG}..HEAD"
+            echo "published=false" >> "$GITHUB_OUTPUT"
           fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
-          BUMP=""
-          while IFS= read -r subject; do
-            [ -z "$subject" ] && continue
-            if echo "$subject" | grep -qE '^[a-z]+(\(.+\))?!:'; then
-              BUMP="major"; break
-            fi
-            if [ "$BUMP" != "minor" ] && echo "$subject" | grep -qE '^feat(\(.+\))?:'; then
-              BUMP="minor"
-            fi
-            if [ -z "$BUMP" ] && echo "$subject" | grep -qE '^fix(\(.+\))?:'; then
-              BUMP="patch"
-            fi
-          done < <(git log "$RANGE" --format="%s" --no-merges)
-
-          echo "type=$BUMP" >> "$GITHUB_OUTPUT"
-
-      - name: Publish
-        if: steps.bump.outputs.type
+      - name: Tag and publish
+        if: steps.check.outputs.published == 'false'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version "${{ steps.bump.outputs.type }}" -m "chore(release): %s"
-          git push --follow-tags
+          git tag "v${{ steps.check.outputs.version }}"
+          git push origin "v${{ steps.check.outputs.version }}"
           npm publish --provenance --access public
+
+      - name: Create GitHub release
+        if: steps.check.outputs.published == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "v${{ steps.check.outputs.version }}" --generate-notes
