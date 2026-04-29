@@ -1,8 +1,9 @@
 name: Publish
 
 on:
-  push:
+  pull_request:
     branches: [ master ]
+    types: [ closed ]
 
 permissions:
   contents: write
@@ -10,6 +11,8 @@ permissions:
 
 jobs:
   publish:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref,
+      'release/')
     runs-on: ubuntu-latest
 
     steps:
@@ -35,21 +38,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Check if version is already published
+      - name: Resolve version
         id: check
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          if git tag -l "v${VERSION}" | grep -q .; then
-            echo "published=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "published=false" >> "$GITHUB_OUTPUT"
-          fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Tag and publish
-        if: steps.check.outputs.published == 'false'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -58,7 +53,6 @@ jobs:
           npm publish --provenance --access public
 
       - name: Create GitHub release
-        if: steps.check.outputs.published == 'false'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "v${{ steps.check.outputs.version }}" --generate-notes
