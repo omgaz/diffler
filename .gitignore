@@ -1,8 +1,10 @@
-# Logs
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+coverage/
+.env
+.env.*
+!.env.example
+.DS_Store
 *.log
-
-# Editors
-.vscode
-
-# Dependency directory
-node_modules

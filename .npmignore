@@ -1,7 +1,0 @@
-.travis.yml
-tests
-src
-.eslintrc
-.eslintignore
-.gitignore
-.github

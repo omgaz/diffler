@@ -1,0 +1,73 @@
+name: Publish
+
+on:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run check-types
+
+      - name: Test
+        run: npm run test:terse
+
+      - name: Build
+        run: npm run build
+
+      - name: Resolve version bump
+        id: bump
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            RANGE="HEAD"
+          else
+            RANGE="${LAST_TAG}..HEAD"
+          fi
+
+          BUMP=""
+          while IFS= read -r subject; do
+            [ -z "$subject" ] && continue
+            if echo "$subject" | grep -qE '^[a-z]+(\(.+\))?!:'; then
+              BUMP="major"; break
+            fi
+            if [ "$BUMP" != "minor" ] && echo "$subject" | grep -qE '^feat(\(.+\))?:'; then
+              BUMP="minor"
+            fi
+            if [ -z "$BUMP" ] && echo "$subject" | grep -qE '^fix(\(.+\))?:'; then
+              BUMP="patch"
+            fi
+          done < <(git log "$RANGE" --format="%s" --no-merges)
+
+          echo "type=$BUMP" >> "$GITHUB_OUTPUT"
+
+      - name: Publish
+        if: steps.bump.outputs.type
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          npm version "${{ steps.bump.outputs.type }}" -m "chore(release): %s"
+          git push --follow-tags
+          npm publish --provenance --access public

@@ -1,4 +1,4 @@
-module.exports = {
+export const metadataV2 = {
   version: 2,
   created: '2019-07-23T09:36:20.719Z',
   modified: '2019-07-23T09:36:20.719Z',
