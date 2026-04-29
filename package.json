@@ -1,22 +1,39 @@
 {
   "name": "diffler",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "A recursive JSON comparison script for humans",
-  "main": "./dist/index.js",
-  "devDependencies": {
-    "eslint": "^8.23.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-jsdoc": "^39.3.6",
-    "eslint-plugin-prettier": "^4.2.1",
-    "mocha": "^10.0.0",
-    "prettier": "^2.1.2",
-    "uglify-js": "^3.11.2"
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Running Mocha Tests\" && mocha ./tests/index.js",
-    "lint": "eslint .",
-    "build": "echo \"Running Build\" && uglifyjs ./src/index.js --comments --compress --mangle -o ./dist/index.js",
-    "bench": "echo \"Running Performance Benchmark\" && node ./tests/performance.js"
+    "build": "vite build && tsc --project tsconfig.build.json --emitDeclarationOnly && cp dist/index.d.ts dist/index.d.cts",
+    "test": "vitest run",
+    "test:terse": "vitest run --reporter=./src/terse-reporter.ts",
+    "test:watch": "vitest",
+    "lint": "biome check .",
+    "lint:fix": "biome check --fix .",
+    "check-types": "tsc --noEmit",
+    "bench": "vitest bench --run",
+    "prepare": "lefthook install"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
@@ -36,5 +53,12 @@
   "bugs": {
     "url": "https://github.com/omgaz/diffler/issues"
   },
-  "homepage": "https://github.com/omgaz/diffler"
+  "homepage": "https://github.com/omgaz/diffler",
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.13",
+    "lefthook": "^2.1.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.10",
+    "vitest": "^4.1.5"
+  }
 }

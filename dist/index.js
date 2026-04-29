@@ -1,5 +1,44 @@
-/**
- * @license MIT https://github.com/omgaz/diffler
- * Author: Gary Chisholm @omgaz
- */
-const isPlainObject=r=>r&&"object"==typeof r&&!Array.isArray(r),isValidProperty=(r,e)=>Object.prototype.hasOwnProperty.call(r,e)&&"function"!=typeof r[e],compareValues=(e,t)=>{if(typeof e!=typeof t)return{from:e,to:t};if(Array.isArray(e)&&Array.isArray(t)){var o={},l=Math.max(e.length,t.length);for(let r=0;r<l;r++){var n=compareValues(e[r],t[r]);n&&(o[r]=n)}return Object.keys(o).length?o:null}var r;return isPlainObject(e)&&isPlainObject(t)?(r=diffler(e,t),Object.keys(r).length?r:null):e!==t?{from:e,to:t}:null};function diffler(r,e){var t,o={};for(const l in r)isValidProperty(r,l)&&(l in e?(t=compareValues(r[l],e[l]))&&(o[l]=t):o[l]={from:r[l],to:null});for(const n in e)!isValidProperty(e,n)||n in r||(o[n]={from:null,to:e[n]});return o}module.exports=diffler;
+//#region src/index.ts
+var e = (e) => typeof e == "object" && !!e && !Array.isArray(e), t = (e, t) => Object.hasOwn(e, t) && typeof e[t] != "function", n = (t, i) => {
+	if (typeof t != typeof i) return {
+		from: t,
+		to: i
+	};
+	if (Array.isArray(t) && Array.isArray(i)) {
+		let e = {}, r = Math.max(t.length, i.length);
+		for (let a = 0; a < r; a++) {
+			let r = n(t[a], i[a]);
+			r && (e[a] = r);
+		}
+		return Object.keys(e).length > 0 ? e : null;
+	}
+	if (e(t) && e(i)) {
+		let e = r(t, i);
+		return Object.keys(e).length > 0 ? e : null;
+	}
+	return t === i ? null : {
+		from: t,
+		to: i
+	};
+}, r = (e, r) => {
+	let i = {};
+	for (let a in e) {
+		if (!t(e, a)) continue;
+		if (!(a in r)) {
+			i[a] = {
+				from: e[a],
+				to: null
+			};
+			continue;
+		}
+		let o = n(e[a], r[a]);
+		o && (i[a] = o);
+	}
+	for (let n in r) t(r, n) && (n in e || (i[n] = {
+		from: null,
+		to: r[n]
+	}));
+	return i;
+};
+//#endregion
+export { r as default };

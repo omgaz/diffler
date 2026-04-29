@@ -12,11 +12,6 @@
 
 To compare JSON objects containing asset metadata for a digital library. Upon change of any metadata, we'd store these changes as an audit trail and email asset stakeholders for review and approval of the changes.
 
-## Dependencies
-
-diffler is written with Node v12 in mind.
-Tests depend on [Mocha](https://mochajs.org/).
-
 ## Usage
 
 [![npm version](https://badge.fury.io/js/diffler.png)](https://www.npmjs.com/package/diffler)
@@ -27,7 +22,7 @@ npm install diffler
 
 ### Params
 
-`obj1` and `obj2` are two JSON objects for comparison.
+`original` and `updated` are two JSON objects for comparison.
 
 ### Return
 
@@ -37,23 +32,49 @@ If different: A JSON object with preserved path structure. The resulting values 
 
 ### Example
 
-```js
-const diffler = require("diffler");
+#### ESM
 
-const before = { name: "omgaz", location: "London" };
-const after = { name: "omgaz", location: "Melbourne" };
+```ts
+import diffler from 'diffler';
+
+const before = { name: 'omgaz', location: 'London' };
+const after = { name: 'omgaz', location: 'Melbourne' };
 
 const difference = diffler(before, after);
-console.log(difference); // { location: { from: "London", to: "Melbourne" } }
+console.log(difference); // { location: { from: 'London', to: 'Melbourne' } }
 ```
 
-## Tests
+#### CommonJS
 
-[![Build Status](https://travis-ci.org/omgaz/diffler.svg?branch=master)](https://travis-ci.org/omgaz/diffler)
+```js
+const diffler = require('diffler');
 
-If you'd like to run tests, check out the whole project. You'll need NodeJS installed. Tests use Mocha.
+const before = { name: 'omgaz', location: 'London' };
+const after = { name: 'omgaz', location: 'Melbourne' };
+
+const difference = diffler(before, after);
+console.log(difference); // { location: { from: 'London', to: 'Melbourne' } }
+```
+
+## Development
+
+Requires Node 18+.
 
 ```bash
-  npm install
-  npm test
+npm install
+npm test
+npm run build
 ```
+
+### Scripts
+
+| Command               | Description                   |
+| --------------------- | ----------------------------- |
+| `npm test`            | Run tests with Vitest         |
+| `npm run test:terse`  | Run tests with minimal output |
+| `npm run test:watch`  | Run tests in watch mode       |
+| `npm run lint`        | Check with Biome              |
+| `npm run lint:fix`    | Auto-fix with Biome           |
+| `npm run check-types` | TypeScript type checking      |
+| `npm run build`       | Build with Vite               |
+| `npm run bench`       | Run performance benchmark     |
